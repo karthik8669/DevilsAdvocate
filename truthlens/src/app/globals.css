@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens ─────────────────────────────────────────── */
+:root {
+  --bg: #080808;
+  --card: #111;
+  --accent: #ef4444;
+}
+
+/* ── Base ──────────────────────────────────────────────────── */
+body {
+  background: var(--bg);
+  color: #ededed;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── Scanline overlay (CSS only) ───────────────────────────── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(220, 20, 20, 0.022) 3px,
+    rgba(220, 20, 20, 0.022) 4px
+  );
+  animation: scanlines-scroll 12s linear infinite;
+}
+
+@keyframes scanlines-scroll {
+  from { background-position: 0 0; }
+  to   { background-position: 0 100vh; }
+}
+
+/* ── Glitch title ───────────────────────────────────────────── */
+.glitch {
+  position: relative;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.glitch::before {
+  color: #0ff;
+  animation: glitch-1 4s infinite;
+}
+.glitch::after {
+  color: var(--accent);
+  animation: glitch-2 4s infinite;
+}
+
+@keyframes glitch-1 {
+  0%, 88%, 100% { opacity: 0; transform: none; clip-path: none; }
+  89%  { opacity: 0.8; clip-path: inset(20% 0 60% 0); transform: translate(-3px,  1px); }
+  91%  { opacity: 0.8; clip-path: inset(55% 0 20% 0); transform: translate( 3px, -1px); }
+  93%  { opacity: 0.8; clip-path: inset(10% 0 75% 0); transform: translate(-2px,  2px); }
+  95%  { opacity: 0; }
+}
+@keyframes glitch-2 {
+  0%, 86%, 100% { opacity: 0; transform: none; clip-path: none; }
+  87%  { opacity: 0.6; clip-path: inset(40% 0 30% 0); transform: translate( 3px, -2px); }
+  89%  { opacity: 0.6; clip-path: inset(70% 0  5% 0); transform: translate(-3px,  1px); }
+  91%  { opacity: 0; }
+}
+
+/* ── Letter-by-letter reveal ────────────────────────────────── */
+@keyframes letter-in {
+  0%  { opacity: 0; transform: translateY(-18px) skewX(-10deg); filter: blur(4px); }
+  60% { opacity: 1; transform: translateY(3px)   skewX(2deg);   filter: blur(0); }
+  100%{ opacity: 1; transform: none; filter: blur(0); }
+}
+.letter {
+  display: inline-block;
+  animation: letter-in 0.45s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+/* ── Button charge animation ────────────────────────────────── */
+@keyframes charge {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+.btn-charging {
+  background: linear-gradient(90deg, #7f1d1d, #ef4444, #fca5a5, #ef4444, #7f1d1d);
+  background-size: 200% auto;
+  animation: charge 0.6s linear infinite;
+  cursor: wait;
+}
+
+/* ── Fade-in ─────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease both;
+}
+
+/* ── Radial gradient ─────────────────────────────────────────── */
+.bg-gradient-radial {
+  background-image: radial-gradient(var(--tw-gradient-stops));
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 9999px; }
